@@ -1,15 +1,9 @@
 const mysql = require('mysql');
 const Bluebird = require('bluebird');
 
-const config = {
-  host: '127.0.0.1',
-  port: 3306,
-  user: 'root',
-  password: 'MysqlAdmin2021',
-  database: 'accountdb'
-};
+const config = require('../config.json');
 
-const connection = mysql.createConnection(config);
+const connection = mysql.createConnection(config.rds);
 connection.query = Bluebird.promisify(connection.query);
 
 module.exports = connection;
