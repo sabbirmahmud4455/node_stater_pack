@@ -1,4 +1,4 @@
-const Validator = require('fastest-validator');
+const { validate } = require('../utils/request-validator');
 
 const rules = {
   create: {
@@ -14,22 +14,10 @@ const rules = {
 };
 
 const validateRequest = (req, ruleName) => {
-  if(Object.keys(req.body).length === 0) {
-    return {
-      error: { message: 'Request body cannot be empty.' }
-    };
-  }
-  
-  const v = new Validator();
-  const result = v.validate(req.body, rules[ruleName]);
-  if(result !== true) {
-    return { error: result };
-  }
-  else {
-    return { data: { ...req.body } };
-  }
+  const rule = rules[ruleName];
+  return validate(req, rule);
 };
 
-module.exports ={
+module.exports = {
   validateRequest,
 };

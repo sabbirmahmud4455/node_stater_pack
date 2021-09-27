@@ -5,5 +5,6 @@
     "user": "root",
     "password": "MysqlAdmin2021",
     "database": "accountdb"
-  }
+  },
+  "logLevel": "debug"
 }
