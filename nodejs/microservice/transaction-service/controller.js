@@ -16,10 +16,9 @@ router.post('/deposit', async (req, res) => {
     const account = await model.getAccount(accountNumber);
     if(!account) return response.badRequest({ message: 'Account not found' });
     
-    const transaction = await model.deposit({ accountNumber, transactionType, amount, remarks });
+    await model.deposit({ accountNumber, transactionType, amount, remarks });
     
     const responsePayload = {
-      transactionId: transaction.insertId,
       type: 'DEPOSIT',
       message: 'Transaction successful',
     };
@@ -45,10 +44,9 @@ router.post('/withdraw', async (req, res) => {
 
     if(account.balance - amount < 0) return response.badRequest({ message: 'Not enough balance' });
     
-    const transaction = await model.withdraw({ accountNumber, transactionType, amount, remarks });
+    await model.withdraw({ accountNumber, transactionType, amount, remarks });
     
     const responsePayload = {
-      transactionId: transaction.insertId,
       type: 'WITHDRAW',
       message: 'Transaction successful',
     };
