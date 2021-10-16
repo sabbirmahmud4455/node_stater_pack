@@ -13,6 +13,13 @@ const rules = {
     amount: { type: 'number', positive: true, empty:false },
     remarks: { type: 'string', empty: false, optional: true },
   },
+  transfer: {
+    senderAccountNumber: { type: 'string', max: 15, empty: false },
+    receiverAccountNumber: { type: 'string', max: 15, empty: false },
+    transactionType: { type: 'string', enum: ['TRANSFER'] },
+    amount: { type: 'number', positive: true, empty:false },
+    remarks: { type: 'string', empty: false, optional: true },
+  },
 };
 
 const validateRequest = (req, ruleName) => {

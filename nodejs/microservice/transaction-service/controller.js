@@ -59,4 +59,35 @@ router.post('/withdraw', async (req, res) => {
   }
 });
 
+router.post('/transfer', async (req, res) => {
+  logger.info(`TRANSACTION-CONTROLLER::TRANSFER`);
+  const response = new Response(res);
+  try {
+    const { data, error } = validateRequest(req, 'transfer');
+    if(error) return response.badRequest(error);
+
+    const { senderAccountNumber, receiverAccountNumber, transactionType, amount, remarks } = data;
+    const senderAccount = await model.getAccount(senderAccountNumber);
+    if(!senderAccount) return response.badRequest({ message: 'Sender account not found' });
+
+    const receiverAccount = await model.getAccount(receiverAccountNumber);
+    if(!receiverAccount) return response.badRequest({ message: 'Receiver account not found' });
+
+    if(senderAccount.balance - amount < 0) return response.badRequest({ message: 'Not enough balance in sender account' });
+    
+    await model.transfer({ senderAccountNumber, receiverAccountNumber, transactionType, amount, remarks });
+    
+    const responsePayload = {
+      type: 'TRANSFER',
+      message: 'Transaction successful',
+    };
+
+    return response.created(responsePayload);
+  } catch (error) {
+    logger.error(`TRANSACTION-CONTROLLER::TRANSFER`);
+    const message = error.message ? error.message : 'Server error';
+    response.internalServerError({ message });
+  }
+});
+
 module.exports = router;

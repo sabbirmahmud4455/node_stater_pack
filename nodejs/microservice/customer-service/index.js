@@ -12,7 +12,6 @@ app.use(express.json());
 // MIDDLEWARES
 
 
-
 // ROUTES
 registerRoutes(app);
 
