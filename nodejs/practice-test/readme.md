@@ -13,7 +13,7 @@ This application can store and search personal contacts.
 
 - User can add contact info. A contact info consists of `Name`, `DoB` and `Email`. A single contact can have multiple emails
 
-- User can search contact info. Search keyword can be either `Name` or any of the `Email`
+- User can search contact info.
 
   
 
@@ -24,7 +24,7 @@ This application can store and search personal contacts.
 |Column|Data Type|Nullable|Description|
 |------|---------|--------|-----------|
 |userId|int(11)|No|Primary Key and Auto Increment|
-|email|varchar(50)|No|Unique. Will be used as username|
+|username|varchar(50)|No|Username. Should be unique|
 |password|varchar(100)|No|Password |
 <hr/>
   
@@ -45,8 +45,8 @@ This application can store and search personal contacts.
 
 |Column|Data Type|Nullable|Description|
 |------|---------|--------|-----------|
-|contactId|int(11)|No|Foreign Key to the `contacts` table|
-|email|varchar(50)|No|Email address of the contact|
+|contactId|int(11)|No|Primary Key. Foreign Key to the `contacts` table|
+|email|varchar(50)|No|Primary Key. Email address of the contact|
   <hr/>
   
   
@@ -57,12 +57,12 @@ This application can store and search personal contacts.
 #### Request
 |Name|Type|Required|Description|
 |----|----|--------|-----------|
-|email|string|Yes|Email of the user|
+|username|string|Yes|Username|
 |password|string|Yes|Password|
 #### Example
 ```json
 {
-	"email": "stan.lee@example.com",
+	"username": "stan.lee@example.com",
 	"password": "P@$$w0rd"
 }
 ```
@@ -142,7 +142,7 @@ This application can store and search personal contacts.
 |Name|Type|Required|Description|
 |----|----|--------|-----------|
 |userId|integer|Yes|User ID|
-|search|string|No|Search keyword. Match with both `name` and `nick` property of the contact. If not given, return all the contacts|
+|search|string|No|Search keyword. Match with `name` and `nick` property of the contact. If not given, return all the contacts|
 #### Example
 ```json
 {
@@ -154,7 +154,11 @@ This application can store and search personal contacts.
 |Name|Type|Description|
 |----|----|-----------|
 |success|boolean|Specifies if the request is completed successfully|
-|message|string|Response message|
+|contacts|array of objects|List of contacts|
+|contacts[].name|string|Name of the contact|
+|contacts[].nick|string|Nickname of the contact (*if exist*)|
+|contacts[].dob|string|Birthdate of the contact (*if exist*)|
+|contacts[].emails|array of strings|List of emails of the contact|
 #### Example
 ```json
 {
@@ -162,7 +166,7 @@ This application can store and search personal contacts.
 	"contacts": [
 		{
 			"name": "Anthony Edward Stark",
-			"nick": "Tony"
+			"nick": "Tony",
 			"dob": "1970-05-29",
 			"emails": [
 				"tony@mcu.net",
@@ -178,7 +182,7 @@ This application can store and search personal contacts.
 		},
 		{
 			"name": "Steven Grant Rogers",
-			"nick": "Steve"
+			"nick": "Steve",
 			"dob": "1918-07-04",
 			"emails": [
 				"steve@mcu.net",
