@@ -1,7 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { validateRequest } = require('./validator');
-const Response = require('./utils/response');
+const { validateRequest } = require('../../../utils/request-validator');
+const Response = require('../../../utils/response');
+const { response } = require('express');
+
+const userModule = require('../../model/user/user');
+
+// get all users
+router.get('/', (req, res) => {
+	const getAll = userModule.getAll();	
+	res.json(getAll);
+	console.log('get user');
+})
 
 // require your models here
 
