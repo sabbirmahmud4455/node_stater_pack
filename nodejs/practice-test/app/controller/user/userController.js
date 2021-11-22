@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { validateRequest } = require('../../../utils/request-validator');
+const { validateRequest } = require('../../validation/user/userValidator');
 const Response = require('../../../utils/response');
 const { response } = require('express');
 
@@ -10,7 +10,6 @@ const userModule = require('../../model/user/user');
 router.get('/', async (req, res) => {
 	const getAll = await userModule.getAll();	
 	res.json(getAll);
-	console.log('get user');
 })
 
 router.get('/:id', async (req, res) => {
@@ -19,9 +18,47 @@ router.get('/:id', async (req, res) => {
 	res.json(user);
 })
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
 
-	res.json(req.body)
+//   const responsess = new Response(res);
+//   try {
+//     const { data, error } = validateRequest(req, 'create');
+//     if(error) return response.badRequest(error);
+
+//     const { customerName, email, phone } = data;
+//     const customer = await model.add({ customerName, email, phone });
+//     return response.created(customer);
+//   } catch (error) {
+//     logger.error(`CUSTOMER-CONTROLLER::INSERT`);
+//     const message = error.message ? error.message : 'Server error';
+//     response.internalServerError({ message });
+//   }
+
+
+
+  const response = new Response(res)
+
+  try {
+	const {data, error} = validateRequest (req, 'create');
+
+	if(error) return response.badRequest(error);
+
+
+	console.log('hello');
+
+	// const {userName, password} = data;
+
+	// const user = await userModule.store(userName, password)
+
+	// return response.created(user);
+
+  } catch (error) {
+	  
+  }
+
+
+
+	
 
 	// const response = new Response(res)
 })

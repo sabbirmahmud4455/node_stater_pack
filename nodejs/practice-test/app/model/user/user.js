@@ -18,15 +18,23 @@ const getAll = async () => {
 
 const find = async (id) => {
 	const sql = `SELECT * FROM ${tableName} WHERE ${idColumn}=${db.escape(id)}`
-
 	const user = await db.query(sql);
 
 	return user;
 }
 
+const store = async (userName, password) => {
+	const sql = `INSERT INTO ${tableName} VALUES (null ,?, ?);`
+	const user = await db.query(sql, [userName, password]);
+
+	return user;
+
+}
+
 module.exports = {
 	getAll,
-	find
+	find, 
+	store
 }
 	
 	

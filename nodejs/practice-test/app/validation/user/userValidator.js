@@ -1,7 +1,14 @@
 const { validate } = require('../../../utils/request-validator');
 
 const rules = {
-  // create your validation rules here
+  create: {
+    userName: { type: 'string', empty: false },
+    password: { type: 'string', empty: false },
+  },
+  update: {
+    userName: { type: 'string', empty: false },
+    password: { type: 'string', empty: false },
+  },
 };
 
 const validateRequest = (req, ruleName) => {
@@ -12,3 +19,7 @@ const validateRequest = (req, ruleName) => {
 module.exports = {
   validateRequest,
 };
+
+
+
+
