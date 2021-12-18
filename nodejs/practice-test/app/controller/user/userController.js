@@ -12,29 +12,16 @@ router.get('/', async (req, res) => {
 	res.json(getAll);
 })
 
+
+//find user by id
 router.get('/:id', async (req, res) => {
 	const id = req.params.id;
 	const user = await userModule.find(id);
 	res.json(user);
 })
 
+//create user
 router.post('/', async (req, res) => {
-
-//   const responsess = new Response(res);
-//   try {
-//     const { data, error } = validateRequest(req, 'create');
-//     if(error) return response.badRequest(error);
-
-//     const { customerName, email, phone } = data;
-//     const customer = await model.add({ customerName, email, phone });
-//     return response.created(customer);
-//   } catch (error) {
-//     logger.error(`CUSTOMER-CONTROLLER::INSERT`);
-//     const message = error.message ? error.message : 'Server error';
-//     response.internalServerError({ message });
-//   }
-
-
 
   const response = new Response(res)
 
@@ -43,25 +30,53 @@ router.post('/', async (req, res) => {
 
 	if(error) return response.badRequest(error);
 
+	const {userName, password} = data;
 
-	console.log('hello');
 
-	// const {userName, password} = data;
+	const user = await userModule.store(userName, password)
 
-	// const user = await userModule.store(userName, password)
+
+	return res.json(user);
 
 	// return response.created(user);
 
   } catch (error) {
-	  
+	const message = error.message ? error.message : 'Server error';
+    response.internalServerError({ message });
   }
 
-
-
-	
-
-	// const response = new Response(res)
 })
+
+
+// update user by id
+router.put('/update/:id', async (req, res) => {
+	const response = new Response(res);
+	const id = req.params.id;
+
+	try {
+
+		const {data , error } =  validateRequest(req, 'update');
+
+		if (error) return response.badRequest(error);
+
+		const {userName, password} = data;
+
+		const user = await userModule.find(id);
+
+		if (user.length == 0) return response.notFound('user not found')
+
+	    const update = await userModule.update(id ,userName, password);
+
+		return response.ok(update);
+
+
+	} catch (error) {
+		return response.internalServerError(error);
+	}
+
+
+})
+
 
 // require your models here
 

@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 
-const { registerRoutes } = require('./routes');
+const { registerRoutes } = require('./router/routes');
 const port = 3000;
 
 // CONFIGURATION

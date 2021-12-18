@@ -3,7 +3,6 @@ const tableName = 'users';
 const idColumn = 'userId'
 
 
-
 // create your model methods here
 // ** you may create different model for different db table
 
@@ -23,18 +22,22 @@ const find = async (id) => {
 	return user;
 }
 
-const store = async (userName, password) => {
-	const sql = `INSERT INTO ${tableName} VALUES (null ,?, ?);`
-	const user = await db.query(sql, [userName, password]);
+const store = async (username, password) => {
+	
+	const sql = `INSERT INTO ${tableName} VALUES (null,?,?);`
+	return await db.query(sql, [username, password]);
 
-	return user;
+}
 
+const update = async (userName, password) => {
+	return 'update'
 }
 
 module.exports = {
 	getAll,
 	find, 
-	store
+	store,
+	update
 }
 	
 	
